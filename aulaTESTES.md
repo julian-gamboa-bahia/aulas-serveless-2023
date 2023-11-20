@@ -32,3 +32,97 @@ Os termos "testes end-to-end (E2E)" e "testes de integração" são frequentemen
         Exemplos: Um teste de integração pode verificar se um serviço interage corretamente com um banco de dados, se as APIs estão se comunicando conforme o esperado, ou se os diferentes componentes de um sistema estão cooperando adequadamente.
 
 Em resumo, os testes E2E são mais abrangentes, englobando todo o fluxo de uma aplicação, enquanto os testes de integração concentram-se em garantir que os diferentes componentes ou módulos de um sistema funcionem bem juntos. Ambos são cruciais para garantir a qualidade de um aplicativo, e a escolha entre eles dependerá dos objetivos específicos de teste e dos requisitos do projeto. Em alguns casos, ambos os tipos de testes podem ser complementares para fornecer uma cobertura mais completa.
+
+### **Laboratório Avançado**: testes unitários e de integração:
+
+Com ajuda do Dynamolocal (usando o **docker-compose up**) pode-se simular uma função AWS lambda usando o comando **sam local start-api** para posteriormente testar:
+
+* sam local invoke getByIdFunction --event ./events/event-get-by-id.json
+
+* sam local invoke deleteItemFunction --event ./events/event-deleteItemFunction
+
+* sam local invoke putItemFunction --event ./events/event-post-item.json 
+
+* sam local invoke getByIdFunction --event ./events/event-get-by-id.json
+
+* sam local invoke getAllItemsFunction --event ./events/event-get-all-items.json
+
+* sam local invoke putItemFunction --event ./events/event-post-item.json 
+
+* sam local invoke getByIdFunction --event ./events/event-get-by-id.json
+
+* sam local invoke getAllItemsFunction --event ./events/event-get-all-items.json
+
+Observe o comportamento sem o  **"DynamoDB local"** , ou seja fazendo um **docker-compose down**, para ler e aprender sobre as mensagens de erros.
+
+No caso dos testes unitários será preciso simular o evento em cada arquivo *test.ts* usando o JSON
+
+```json
+ { 
+            httpMethod: 'GET',
+            body: '',
+            headers: {},
+            isBase64Encoded: false,
+            multiValueHeaders: {},
+            multiValueQueryStringParameters: {},
+            path: '/',
+            pathParameters: {},
+            queryStringParameters: {},
+            requestContext: {
+                accountId: '123456789012',
+                apiId: '1234',
+                authorizer: {},
+                httpMethod: 'get',
+                identity: {
+                    accessKey: '',
+                    accountId: '',
+                    apiKey: '',
+                    apiKeyId: '',
+                    caller: '',
+                    clientCert: {
+                        clientCertPem: '',
+                        issuerDN: '',
+                        serialNumber: '',
+                        subjectDN: '',
+                        validity: { notAfter: '', notBefore: '' },
+                    },
+                    cognitoAuthenticationProvider: '',
+                    cognitoAuthenticationType: '',
+                    cognitoIdentityId: '',
+                    cognitoIdentityPoolId: '',
+                    principalOrgId: '',
+                    sourceIp: '',
+                    user: '',
+                    userAgent: '',
+                    userArn: '',
+                },
+                path: '/',
+                protocol: 'HTTP/1.1',
+                requestId: 'c6af9ac6-7b61-11e6-9a41-93e8deadbeef',
+                requestTimeEpoch: 1428582896000,
+                resourceId: '123456',
+                resourcePath: '/',
+                stage: 'dev',
+            },
+            resource: '',
+            stageVariables: {},
+        }
+```
+
+Sobre este event pode-se ler: https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-lambda-proxy-integrations.html#api-gateway-simple-proxy-for-lambda-input-format
+
+Outra forma fazer estes testes de integração de forma manual pode-ser usando os comandos: 
+
+```bash
+curl -X PUT http://localhost:3000/ -H "Content-Type: application/json" -d '{"id": 33, "ExpressionAttributeValues": "set Ativo = :ativo", "UpdateExpression": "madrid"}'
+
+curl -X PUT http://localhost:3000/ -H "Content-Type: application/json" -d '{"id": 1, "ExpressionAttributeValues": "set Ativo = :ativo", "UpdateExpression": {":ativo": true }}'
+
+curl -X PUT http://localhost:3000/ -H "Content-Type: application/json" -d '{}'
+
+curl -X POST http://localhost:3000/ -H "Content-Type: application/json" -d '{}'
+
+curl -X POST http://localhost:3000/ -H "Content-Type: application/json" -d '{}'
+
+curl -X POST http://localhost:3000/ -H "Content-Type: application/json" -d '{"id": 1, "NomeCompleto": "Timidim gatinho (dorme)", "DataNascimento": "1990-01-01", "Ativo": true, "Enderecos": [{"Rua": "Nome da Rua", "Numero": 123}], "Contatos": [{"Tipo": "Email", "Valor": "fulano@email.com", "Principal": true}, {"Tipo": "Telefone", "Valor": "123-456-7890", "Principal": false}]}'
+```
