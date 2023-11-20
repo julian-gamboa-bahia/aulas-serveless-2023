@@ -1,0 +1,234 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  
+
+  funcao-lambda (crud para ler uma tabela DynamoDB)
+  
+Globals:
+  Function:
+    Timeout: 4
+
+Resources:
+
+# CRUD (CREATE  , nesta seção implementa-se  o verbo HTTP POST)
+# Lambda function config 
+  putItemFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: funcao-lambda/handlers/
+      Handler: put-item.putItemHandler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: HTTP verbo post (https://github.com/julian-gamboa-bahia/aulas-serveless-2023)
+      Policies:
+        # Give Create/Read/Update/Delete Permissions to the SampleTable
+        - DynamoDBCrudPolicy:
+            TableName: CadastroClientes
+      Environment:
+        Variables:
+          # Make table name accessible as environment variable from function code during execution
+          SAMPLE_TABLE: CadastroClientes
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /
+            Method: POST
+    Metadata: # Manage esbuild properties
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: false
+        Target: "es2020"
+        Sourcemap: false
+        EntryPoints: 
+        - put-item.ts
+        External:
+          - "@aws-sdk/client-dynamodb"        
+          - "@aws-sdk/lib-dynamodb"    
+
+
+# CRUD (READ  , nesta seção implementa-se  o verbo HTTP GET)
+# Lendo cada elemento com base no seu ID
+# Lambda function config 
+  getByIdFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: funcao-lambda/handlers/    
+      Handler: get-by-id.getByIdHandler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: HTTP get , apenas por ID (https://github.com/julian-gamboa-bahia/aulas-serveless-2023)
+      Policies:
+        # Give Create/Read/Update/Delete Permissions to the SampleTable
+        - DynamoDBCrudPolicy:
+            TableName: CadastroClientes
+      Environment:
+        Variables:
+          # Make table name accessible as environment variable from function code during execution
+          SAMPLE_TABLE: CadastroClientes
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /{id}
+            Method: GET
+    Metadata: # Manage esbuild properties
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: false
+        Target: "es2020"
+        Sourcemap: false
+        EntryPoints: 
+        - get-by-id.ts
+        External:
+          - "@aws-sdk/client-dynamodb"        
+          - "@aws-sdk/lib-dynamodb"    
+
+
+# CRUD (READ  , nesta seção implementa-se  o verbo HTTP GET) 
+# A leitura de TODOS !!!
+# Lambda function config 
+  getAllItemsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: funcao-lambda/handlers/
+      Handler: get-all-items.getAllItemsHandler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: HTTP get (https://github.com/julian-gamboa-bahia/aulas-serveless-2023)
+      Policies:
+        # Give Create/Read/Update/Delete Permissions to the SampleTable
+        - DynamoDBCrudPolicy:
+            TableName: CadastroClientes
+      Environment:
+        Variables:
+          # Make table name accessible as environment variable from function code during execution
+          SAMPLE_TABLE: CadastroClientes
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /
+            Method: GET
+    Metadata: # Manage esbuild properties
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: false
+        Target: "es2020"
+        Sourcemap: false
+        EntryPoints: 
+        - get-all-items.ts
+        External:
+          - "@aws-sdk/client-dynamodb"        
+          - "@aws-sdk/lib-dynamodb"                  
+# CRUD (UPDATE  , nesta seção implementa-se  o verbo HTTP PUT)
+# Lendo cada elemento com base no seu ID
+  updateItemFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: funcao-lambda/handlers/
+      Handler: update-by-id.updateByIdHandler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: HTTP DELETE (https://github.com/julian-gamboa-bahia/aulas-serveless-2023)
+      Policies:
+        # Give Create/Read/Update/Delete Permissions to the SampleTable
+        - DynamoDBCrudPolicy:
+            TableName: CadastroClientes
+      Environment:
+        Variables:
+          # Make table name accessible as environment variable from function code during execution
+          SAMPLE_TABLE: CadastroClientes
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /
+            Method: PUT
+    Metadata: # Manage esbuild properties
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: false
+        Target: "es2020"
+        Sourcemap: false
+        EntryPoints: 
+        - update-by-id.ts
+        External:
+          - "@aws-sdk/client-dynamodb"        
+          - "@aws-sdk/lib-dynamodb"   
+  
+# CRUD (DELETE  , nesta seção implementa-se  o verbo HTTP DELETE)
+  deleteItemFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: funcao-lambda/handlers/
+      Handler: delete-item.deleteItemHandler
+      Runtime: nodejs18.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: HTTP DELETE (https://github.com/julian-gamboa-bahia/aulas-serveless-2023)
+      Policies:
+        # Give Create/Read/Update/Delete Permissions to the SampleTable
+        - DynamoDBCrudPolicy:
+            TableName: CadastroClientes
+      Environment:
+        Variables:
+          # Make table name accessible as environment variable from function code during execution
+          SAMPLE_TABLE: CadastroClientes
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /{id}
+            Method: DELETE
+    Metadata: # Manage esbuild properties
+      BuildMethod: esbuild
+      BuildProperties:
+        Minify: false
+        Target: "es2020"
+        Sourcemap: false
+        EntryPoints: 
+        - delete-item.ts
+        External:
+          - "@aws-sdk/client-dynamodb"        
+          - "@aws-sdk/lib-dynamodb"    
+
+  # DynamoDB table to store item: {id: &lt;ID&gt;, name: &lt;NAME&gt;}
+  CadastroClientes:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: CadastroClientes  # Alterei o nome da tabela aqui            
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: N
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+
+
+Outputs:
+  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+  # Find out more about other implicit resources you can reference within SAM
+  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  CrudApi:
+    Description: "API Gateway endpoint URL for Prod stage for Crud function (https://github.com/julian-gamboa-bahia/aulas-serveless-2023)"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
+  
