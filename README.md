@@ -46,14 +46,13 @@ Para garantir o sucesso deste laboratório tente estudar sobre o **AWS  Cloudfor
 
 ### **Laboratório Avançado**: construindo uma Aplicação Serverless com AWS Lambda
 
-Será preciso aplicar o métodod TDD (Desenvolvimento focado em testes) para que este **Laboratório Avançado** seja feito num tempo sumário. Por isso deve: 
+Será preciso aplicar o método TDD (Desenvolvimento focado em testes) para que este **Laboratório Avançado** seja feito num tempo sumário. Por isso deve: 
 *  Estudar o arquivo **jest.config.ts** neste repositório.
 *  Colocar todos os arquivos *test.ts na pasta para o "método TDD"
 *  Aplicar a sequencia de desenvolvimento e semaforos conforme o método TDD.
 *  Ao finalizar o desenvolvimento deve esvaziar a **pasta para o "método TDD"**
 *  Estudar sobre **testes unitários**, **jest (https://www.npmjs.com/package/jest)**, **Testes de integração**, pirámide de testes.
   
-
 Neste laborátorio avançado deve estudar cada arquivo contido na **pasta events/** dado que serão feitos **testes de integração** com ajuda do sam cli com os comandos:
 
 * sam local invoke getByIdFunction --event ./events/event-get-by-id.json
@@ -85,5 +84,18 @@ Para seu  **dever de casa (estudo detalhado destes laborátorios)**, lembremos q
 Por gentileza veja os arquivos: [aulaTESTES.md](https://github.com/julian-gamboa-bahia/aulas-serveless-2023/blob/main/aulaTESTES.md)
 
 e [samCLI_README.md](https://github.com/julian-gamboa-bahia/aulas-serveless-2023/blob/main/samCLI_README.md) para aprender mais um pouco. 
+
+Para saber mais: 
+
+- [AWS CloudFormation Templates (GovCloud US)](https://aws.amazon.com/cloudformation/resources/templates/govcloud-us/)
+- [AWS SAM: Setting Up Local Serverless Development with Lambda and DynamoDB](https://betterprogramming.pub/aws-sam-setting-local-serverless-development-with-lambda-and-dynamodb-5b4c7375f813)
+- [DynamoDB Developer Guide: ListTables Section](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/example_dynamodb_ListTables_section.html)
+- [AWS CloudFormation: Quick Reference - Lambda Functions](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/quickref-lambda.html)
+- [AWS CloudFormation User Guide](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/Welcome.html)
+- [AWS SDK for JavaScript v3: UpdateCommand](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/Package/-aws-sdk-lib-dynamodb/Class/UpdateCommand/)
+- [AWS CloudFormation Documentation](https://docs.aws.amazon.com/cloudformation/)
+- [AWS Serverless Application Model (SAM) Getting Started Guide](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-getting-started.html)
+- [NPM Package: aws-sdk-mock](https://www.npmjs.com/package/aws-sdk-mock)
+
 
 
