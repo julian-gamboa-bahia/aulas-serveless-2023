@@ -51,6 +51,8 @@ Será preciso aplicar o métodod TDD (Desenvolvimento focado em testes) para que
 *  Colocar todos os arquivos *test.ts na pasta para o "método TDD"
 *  Aplicar a sequencia de desenvolvimento e semaforos conforme o método TDD.
 *  Ao finalizar o desenvolvimento deve esvaziar a **pasta para o "método TDD"**
+*  Estudar sobre **testes unitários**, **jest (https://www.npmjs.com/package/jest)**, **Testes de integração**, pirámide de testes.
+  
 
 Neste laborátorio avançado deve estudar cada arquivo contido na **pasta events/** dado que serão feitos **testes de integração** com ajuda do sam cli com os comandos:
 
@@ -72,9 +74,9 @@ Neste laborátorio avançado deve estudar cada arquivo contido na **pasta events
 
 Se lembre de ativar o **"DynamoDB local"** (com o comando: java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb ou com os arquivods na pasta docker) para poder garatir o sucesso do testes de integração.
 
-## Dicas para seu  **dever de casa (estudo detalhado destes laborátorios) **:
+## Dicas 
 
-Lembremos que o desenho de uma API-RESTFUL deve ser útil para seu projeto, **ao invés de ser uma réplica de um artigo da Wikipẽdia**.  Por isso vou lhe pedir que considere uma piada:
+Para seu  **dever de casa (estudo detalhado destes laborátorios)**, lembremos que o desenho de uma API-RESTFUL deve ser útil para seu projeto, **ao invés de ser uma réplica de um artigo da Wikipẽdia**.  Por isso vou lhe pedir que considere uma piada:
 
 - "Se diz que o cientista da computação (fez uma tese Doutoral sobre API RESTFUL) inventor dos conceitos de CRUD brincou com o uso do verbo http **PATCH** argumentando numa palestra: Eu inventei o uso de  **PATCH** para o CRUD dado que o **PUT** e o **POST** eram algo enrolados."
 
