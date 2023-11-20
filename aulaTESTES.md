@@ -125,4 +125,8 @@ curl -X POST http://localhost:3000/ -H "Content-Type: application/json" -d '{}'
 curl -X POST http://localhost:3000/ -H "Content-Type: application/json" -d '{}'
 
 curl -X POST http://localhost:3000/ -H "Content-Type: application/json" -d '{"id": 1, "NomeCompleto": "Timidim gatinho (dorme)", "DataNascimento": "1990-01-01", "Ativo": true, "Enderecos": [{"Rua": "Nome da Rua", "Numero": 123}], "Contatos": [{"Tipo": "Email", "Valor": "fulano@email.com", "Principal": true}, {"Tipo": "Telefone", "Valor": "123-456-7890", "Principal": false}]}'
+
+curl -X DELETE http://localhost:3000/2
+
+curl -X POST http://localhost:3000/ -H "Content-Type: application/json" -d '{"id": 11, "NomeCompleto": "Timidim gatinho (dorme)", "DataNascimento": "1990-01-01", "Ativo": true, "Enderecos": [{"Rua": "Nome da Rua", "Numero": 123}], "Contatos": [{"Tipo": "Email", "Valor": "fulano@email.com", "Principal": true}, {"Tipo": "Telefone", "Valor": "123-456-7890", "Principal": false}]}'
 ```

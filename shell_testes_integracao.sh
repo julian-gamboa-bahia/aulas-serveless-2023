@@ -1,8 +1,3 @@
-# Aprimoramentos
-
-Pode-se melhorar os **testes de integração** escrevendo um shell para executar o comando curl : 
-
-```bash
 #!/bin/bash
 
 BASE_URL="http://localhost:3000"
@@ -40,12 +35,3 @@ execute_curl "curl -X DELETE $BASE_URL/2" "Delete with valid ID"
 
 # Teste adicional para operação POST após DELETE
 execute_curl "curl -X POST $BASE_URL/ -H \"$HEADERS\" -d '{\"id\": 11, \"NomeCompleto\": \"Timidim gatinho (dorme)\", \"DataNascimento\": \"1990-01-01\", \"Ativo\": true, \"Enderecos\": [{\"Rua\": \"Nome da Rua\", \"Numero\": 123}], \"Contatos\": [{\"Tipo\": \"Email\", \"Valor\": \"fulano@email.com\", \"Principal\": true}, {\"Tipo\": \"Telefone\", \"Valor\": \"123-456-7890\", \"Principal\": false}]}'" "Create after delete"
-
-```
-
-
-### Para entender mais de DynamoDB:
-
- https://www.peerbits.com/blog/set-up-a-local-dynamodb-development-database-on-your-machine.html
-
- 
