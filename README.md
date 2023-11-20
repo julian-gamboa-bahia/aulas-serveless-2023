@@ -82,6 +82,8 @@ Para seu  **dever de casa (estudo detalhado destes laborátorios)**, lembremos q
 
 **Moral daquela piada:** sua API tem que funcionar para seu projeto, sem **se apegar cegamente** aos modelos cientificos já conhecidos (RESTFUL, etc..). 
 
+Por gentileza veja os arquivos: [aulaTESTES.md](https://github.com/julian-gamboa-bahia/aulas-serveless-2023/blob/main/aulaTESTES.md)
 
+e [samCLI_README.md](https://github.com/julian-gamboa-bahia/aulas-serveless-2023/blob/main/samCLI_README.md) para aprender mais um pouco. 
 
 
