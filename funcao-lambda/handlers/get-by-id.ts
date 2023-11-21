@@ -42,7 +42,7 @@ export const getByIdHandler = async (
 
   // Verifica se o parameter {id} é um número inteiro
   const idValidator = 
-  new IdValidator(event, 404, 'Error (getByIdHandler) idValidator ');
+  new IdValidator(event, 400, 'Error (getByIdHandler) idValidator ');
   
   const idValidationResult = idValidator.validateId();
 

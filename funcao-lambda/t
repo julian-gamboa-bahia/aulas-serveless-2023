@@ -1,11 +1,5 @@
-Qual será a saíde do código typescript: 
+3  
+npm run test tests/unit/TESTAR_id/delete-item-handler-TESTAR-id.test.ts
 
-try {      
-  // Tente executar o código que pode lançar uma exceção
-  throw new Error('O corpo não contém todos os elementos necessários para realizar a operação de UPDATE.');
-}
-catch (err) {
-  // Se uma exceção ocorrer, o controle é transferido para cá
-  console.log("Imprime Erro:", err.message);
-}
-
+2  
+npm run test tests/unit/TESTAR_id/get-by-id-handler-TESTAR-id.test.ts

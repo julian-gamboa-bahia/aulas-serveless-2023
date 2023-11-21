@@ -39,12 +39,12 @@ export const deleteItemHandler = async (
   if (
     !Number.isInteger(Number(event.pathParameters.id))
   ) {
-    const response_StatusCode_404 = {
-      statusCode: 404,
+    const response_StatusCode_400 = {
+      statusCode: 400,
       body: JSON.stringify("Não número INTEIRO  " + event.pathParameters.id)
     };
-    console.log("Error (deleteItemHandler)", response_StatusCode_404);
-    return response_StatusCode_404;
+    console.log("Error (deleteItemHandler)", response_StatusCode_400);
+    return response_StatusCode_400;
   }
   const id = Number(event.pathParameters.id);
 
