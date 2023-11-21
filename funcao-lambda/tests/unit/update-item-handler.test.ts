@@ -13,9 +13,9 @@ const event: APIGatewayProxyEvent = {
     multiValueHeaders: {},
     multiValueQueryStringParameters: {},
     path: '/',
-    
-    
-    pathParameters: {id: '1'},//Regra de negocio.
+
+
+    pathParameters: {},
 
     queryStringParameters: {},
     requestContext: {
@@ -60,8 +60,9 @@ const event: APIGatewayProxyEvent = {
     stageVariables: {},
 };
 
+//Com verbo PUT, e BODY completo
 
-describe(' (deleteItemHandler) deve retornar 200 apenas com verbo http PUT ', function () {
+describe(' (updateByIdHandler) deve retornar 200 apenas com verbo http PUT dado que BODY completo', function () {
 
     //Para desacoplar a lógica de negocios do DynamoDB
     beforeEach(() => {
@@ -69,14 +70,14 @@ describe(' (deleteItemHandler) deve retornar 200 apenas com verbo http PUT ', fu
     });
 
 
-    it('verifies response status Code 200, com verbo PUT', async () => {
+    it('verifies response status Code 200, com verbo PUT, BODY completo', async () => {
 
 
         // Configurar o evento com um corpo completo: ExpressionAttributeValues e UpdateExpression
         event.body = JSON.stringify({
             "id": 1,
-            "ExpressionAttributeValues": "set Ativo = :ativo",             
-            "UpdateExpression": {":ativo": true, }
+            "ExpressionAttributeValues": "set Ativo = :ativo",
+            "UpdateExpression": { ":ativo": true, }
         });
         const result: APIGatewayProxyResult = await updateByIdHandler(event);
 
@@ -85,8 +86,9 @@ describe(' (deleteItemHandler) deve retornar 200 apenas com verbo http PUT ', fu
     });
 });
 
+//BODY completo , verbo errado (        event.httpMethod = 'DELETE')
 
-describe(' (deleteItemHandler) deve retornar 405 se o verbo http não for PUT ', function () {
+describe(' (updateByIdHandler) deve retornar 405 se o verbo http não for PUT ', function () {
 
     //Para desacoplar a lógica de negocios do DynamoDB
     beforeEach(() => {
@@ -108,4 +110,5 @@ describe(' (deleteItemHandler) deve retornar 405 se o verbo http não for PUT ',
 
     });
 });
+
 

@@ -1,14 +1,14 @@
 /**
- * Class representing an ID validator.
+ * Represents a validator for the ID in the request body.
  */
-export class IdValidator {
+export class Body_IdValidator {
 
     private event: any;
     private statusCode: number;
     private menssagensErro: string;
 
     /**
-     * Create an instance of IdValidator.
+     * Creates a new instance of Body_IdValidator.
      * @param event - The event object.
      * @param statusCode - The status code.
      * @param menssagensErro - The error messages.
@@ -20,34 +20,40 @@ export class IdValidator {
     }
 
     /**
-     * Validate the ID.
-     * @returns The response status code if the ID is invalid, otherwise true.
+     * Validate the ID in the request body.
+     * @returns The response status code if the ID is invalid, otherwise null.
      */
     validateId() {
-        const idString = this.event?.pathParameters?.id;
+        // Verifique se o corpo do evento é um JSON válido
+        try {
+            const parsedBody = JSON.parse(this.event?.body);
 
-        if (!idString || !Number.isInteger(Number(idString))) {
+            if (!parsedBody || typeof parsedBody.id !== 'number') {
+                throw new Error('O corpo não contém um ID válido.');
+            }
+
+            return null; // Retorna null se o corpo for válido
+        }
+        catch (err) {
             const responseStatusCode = {
                 statusCode: this.statusCode,
-                body: JSON.stringify(`Não é um número inteiro válido: ${idString}`),
+                body: JSON.stringify(err),
             };
 
             console.error(this.menssagensErro, responseStatusCode);
             return responseStatusCode;
         }
-
-        return null;
     }
 
     /**
      * Extracts the ID from the event's path parameters.
      * @returns The extracted ID as a number.
      */
-    extractId() {        
-    
+    extractId() {
+
         return Number(this.event?.pathParameters?.id);
     }
-    
+
 
 }
 

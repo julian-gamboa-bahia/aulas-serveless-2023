@@ -3,9 +3,6 @@ import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, UpdateCommand } from '@aws-sdk/lib-dynamodb';
 import { ReturnValue } from "@aws-sdk/client-dynamodb";
 
-
-import { HttpMethodValidator } from '../regras_negocio/HttpMethodValidator';
-
 const client = process.env.AWS_SAM_LOCAL ? new DynamoDBClient({
   endpoint: "http://172.17.0.1:8000",
 }) : new DynamoDBClient({});
@@ -15,41 +12,34 @@ const ddbDocClient = DynamoDBDocumentClient.from(client);
 export const updateByIdHandler = async (
   event: any): Promise<any> => {
 
-  // Cria uma instância do validador de método HTTP
-  const httpMethodValidator = new HttpMethodValidator(
-    event,
-    405, // Código de status a ser retornado se o método HTTP for inválido
-    'PUT', // Método HTTP esperado
-    'getByIdHandler---Erro ao processar solicitação: Método HTTP inválido' // Mensagem de erro para o log
-  );
+  // Verifique com o GERENTE se for precioso colocar o console.info
+  console.info('Event received: (getByIdHandler) ', event);
 
-  // Valida o método HTTP
-  const httpMethodValidationResult = httpMethodValidator.validateHttpMethod();
 
-  // Se a validação do método HTTP falhar, retorne o objeto de resposta diretamente
-  if (httpMethodValidationResult) {
-    return httpMethodValidationResult;
+  if (event.httpMethod !== 'PUT') {
+    const response_StatusCode_405 = {
+      statusCode: 405,
+    };
+    console.log("Error (updateByIdHandler)", response_StatusCode_405);
+    return response_StatusCode_405;
   }
-
-
 
 
   // Coletando os Elementos do Body, e aplicando as "REGRAS de negocio"
   try {
     // Verifique se o corpo do evento está presente
     if (!event.body) {
-      throw new Error('Corpo não encontrado no evento.');      
+      throw new Error('Corpo não encontrado no evento.');
     }
-    
-    const body = JSON.parse(event.body);  
 
-    //"REGRA de negocio": deve ter todos os elementos para fazer o CREATE (do CRUD)  
+    const body = JSON.parse(event.body);
+
+    //"REGRA de negocio": deve ter todos os elementos para fazer o UPDATE (do CRUD)  
     // Verificar a presença dos campos obrigatórios
     var { id, ExpressionAttributeValues, UpdateExpression } = body;
 
-    // "REGRA de negocio": deve ter todos os elementos para fazer o CREATE (do CRUD)
-    if (!id || !ExpressionAttributeValues || !UpdateExpression ) {
-      
+    if (!id || !ExpressionAttributeValues || !UpdateExpression) {
+
       if (!id) {
         console.log("id está undefined");
       }
@@ -60,19 +50,19 @@ export const updateByIdHandler = async (
         console.log("UpdateExpression está undefined");
       }
 
-      console.log("O corpo não contém todos os elementos necessários para realizar a operação de CREATE. (putItemHandler)", id, ExpressionAttributeValues, UpdateExpression);
-      
-      throw new Error('O corpo não contém todos os elementos necessários para realizar a operação de CREATE.');
+      console.log("O corpo não contém todos os elementos necessários para realizar a operação de UPDATE. (putItemHandler)", id, ExpressionAttributeValues, UpdateExpression);
+
+      throw new Error('O corpo não contém todos os elementos necessários para realizar a operação de UPDATE.');
     }
     else {
       id = body.id;
-      ExpressionAttributeValues = body.ExpressionAttributeValues;      
-      UpdateExpression = body.UpdateExpression;      
+      ExpressionAttributeValues = body.ExpressionAttributeValues;
+      UpdateExpression = body.UpdateExpression;
     }
   }
   catch (err) {
     const response_StatusCode_400 = {
-      headers: {        'Content-Type': 'application/json'},
+      headers: { 'Content-Type': 'application/json' },
       statusCode: 400,
       body: JSON.stringify(err)
     };
@@ -91,11 +81,11 @@ export const updateByIdHandler = async (
     Key: {
       id: id,
     },
-    UpdateExpression: "set Ativo = :ativo", 
+    UpdateExpression: "set Ativo = :ativo",
     ExpressionAttributeValues: {
-      ":ativo": true, 
+      ":ativo": true,
     },
-    ReturnValues: "ALL_NEW" as ReturnValue, 
+    ReturnValues: "ALL_NEW" as ReturnValue,
   };
 
   try {

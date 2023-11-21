@@ -50,7 +50,7 @@ export const getByIdHandler = async (
     return idValidationResult;
   }
 
-  const id = idValidator.validateAndExtractId();
+  const id = idValidator.extractId();
   
 
   var params = {
