@@ -86,9 +86,10 @@ describe(' (updateByIdHandler) deve retornar 200 apenas com verbo http PUT dado 
     });
 });
 
-//BODY completo , verbo errado (        event.httpMethod = 'DELETE')
 
-describe(' (updateByIdHandler) deve retornar 405 se o verbo http não for PUT ', function () {
+//Com verbo DELETE, e BODY completo
+
+describe(' (updateByIdHandler) deve retornar 200 apenas com verbo http PUT dado que BODY completo', function () {
 
     //Para desacoplar a lógica de negocios do DynamoDB
     beforeEach(() => {
@@ -96,19 +97,19 @@ describe(' (updateByIdHandler) deve retornar 405 se o verbo http não for PUT ',
     });
 
 
-    it('verifies response status Code 405, com verbo DELETE', async () => {
+    it('verifies response status Code 200, com verbo PUT, BODY completo', async () => {
+
+
+        // Configurar o evento com um corpo completo: ExpressionAttributeValues e UpdateExpression
         event.body = JSON.stringify({
             "id": 1,
-            "ExpressionAttributeValues": "",
-            "UpdateExpression": ""
+            "ExpressionAttributeValues": "set Ativo = :ativo",
+            "UpdateExpression": { ":ativo": true, }
         });
-
         event.httpMethod = 'DELETE';
         const result: APIGatewayProxyResult = await updateByIdHandler(event);
 
-        expect(result.statusCode).toEqual(405);
+        expect(result.statusCode).toEqual(200);
 
     });
 });
-
-
