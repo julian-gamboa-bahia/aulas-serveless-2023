@@ -74,8 +74,9 @@ describe(' (get-by-id.test.ts ) deve retornar "STATUS CODE" 200 (apenas GET) e 4
         //Evento Mokado, mas considere fazer o teste de integracao (sam local invoke)        
         const result: APIGatewayProxyResult = await getByIdHandler(event);
 
+        
         expect(result.statusCode).toEqual(200);
-        console.log(result.body);
+        
     });
 
 });
