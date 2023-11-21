@@ -2,6 +2,8 @@
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, DeleteCommand } from '@aws-sdk/lib-dynamodb';
 
+import { HttpMethodValidator } from '../regras_negocio/HttpMethodValidator';
+
 
 const client = process.env.AWS_SAM_LOCAL ? new DynamoDBClient({
   endpoint: "http://172.17.0.1:8000",
@@ -9,22 +11,27 @@ const client = process.env.AWS_SAM_LOCAL ? new DynamoDBClient({
 
 const ddbDocClient = DynamoDBDocumentClient.from(client);
 
-
-
-
 export const deleteItemHandler = async (
   event: any): Promise<any> => {
 
-  if (event.httpMethod !== 'DELETE') {
-    const response_StatusCode_405 = {
-      statusCode: 405,
-    };
-    console.log("Error (deleteItemHandler)", response_StatusCode_405);
-    return response_StatusCode_405;
-  }
-
   // Verifique com o GERENTE se for precioso colocar o console.info
-  //console.info('received:', event);
+  console.info('received:', event);
+
+  // Cria uma instância do validador de método HTTP
+  const httpMethodValidator = new HttpMethodValidator(
+    event,
+    405, // Código de status a ser retornado se o método HTTP for inválido
+    'DELETE', // Método HTTP esperado
+    'deleteItemHandler---Erro ao processar solicitação: Método HTTP inválido' // Mensagem de erro para o log
+  );
+
+  // Valida o método HTTP
+  const httpMethodValidationResult = httpMethodValidator.validateHttpMethod();
+
+  // Se a validação do método HTTP falhar, retorne o objeto de resposta diretamente
+  if (httpMethodValidationResult) {
+    return httpMethodValidationResult;
+  }
 
   // Get id from pathParameters from APIGateway because of `/{id}` at template.yaml
 

@@ -3,6 +3,9 @@ import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, UpdateCommand } from '@aws-sdk/lib-dynamodb';
 import { ReturnValue } from "@aws-sdk/client-dynamodb";
 
+
+import { HttpMethodValidator } from '../regras_negocio/HttpMethodValidator';
+
 const client = process.env.AWS_SAM_LOCAL ? new DynamoDBClient({
   endpoint: "http://172.17.0.1:8000",
 }) : new DynamoDBClient({});
@@ -12,14 +15,23 @@ const ddbDocClient = DynamoDBDocumentClient.from(client);
 export const updateByIdHandler = async (
   event: any): Promise<any> => {
 
+  // Cria uma instância do validador de método HTTP
+  const httpMethodValidator = new HttpMethodValidator(
+    event,
+    405, // Código de status a ser retornado se o método HTTP for inválido
+    'PUT', // Método HTTP esperado
+    'getByIdHandler---Erro ao processar solicitação: Método HTTP inválido' // Mensagem de erro para o log
+  );
 
-  if (event.httpMethod !== 'PUT') {
-    const response_StatusCode_405 = {
-      statusCode: 405,
-    };
-    console.log("Error (updateByIdHandler)", response_StatusCode_405);
-    return response_StatusCode_405;
+  // Valida o método HTTP
+  const httpMethodValidationResult = httpMethodValidator.validateHttpMethod();
+
+  // Se a validação do método HTTP falhar, retorne o objeto de resposta diretamente
+  if (httpMethodValidationResult) {
+    return httpMethodValidationResult;
   }
+
+
 
 
   // Coletando os Elementos do Body, e aplicando as "REGRAS de negocio"
