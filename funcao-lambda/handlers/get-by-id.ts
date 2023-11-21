@@ -37,23 +37,23 @@ export const getByIdHandler = async (
   if (httpMethodValidationResult) {
     return httpMethodValidationResult;
   }
-  
-  
+
+
 
   // Verifica se o parameter {id} é um número inteiro
-  const idValidator = 
-  new IdValidator(event, 400, 'Error (getByIdHandler) idValidator ');
-  
+  const idValidator =
+    new IdValidator(event, 400, 'Error (getByIdHandler) idValidator ');
+
   const idValidationResult = idValidator.validateId();
 
   if (idValidationResult) {
     // Se a validação do ID falhar, retorne o objeto de resposta diretamente
-    
+
     return idValidationResult;
   }
 
   const id = idValidator.extractId();
-  
+
 
   var params = {
     TableName: "CadastroClientes",

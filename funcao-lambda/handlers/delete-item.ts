@@ -3,6 +3,7 @@ import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, DeleteCommand } from '@aws-sdk/lib-dynamodb';
 
 import { HttpMethodValidator } from '../regras_negocio/HttpMethodValidator';
+import { IdValidator } from '../regras_negocio/IdValidator';
 
 
 const client = process.env.AWS_SAM_LOCAL ? new DynamoDBClient({
@@ -36,20 +37,23 @@ export const deleteItemHandler = async (
   // Get id from pathParameters from APIGateway because of `/{id}` at template.yaml
 
   // Verifica se o parameter {id} é um número inteiro
-  if (
-    !Number.isInteger(Number(event.pathParameters.id))
-  ) {
-    const response_StatusCode_400 = {
-      statusCode: 400,
-      body: JSON.stringify("Não número INTEIRO  " + event.pathParameters.id)
-    };
-    console.log("Error (deleteItemHandler)", response_StatusCode_400);
-    return response_StatusCode_400;
-  }
-  const id = Number(event.pathParameters.id);
+  const idValidator =
+    new IdValidator(
+      event, 
+      400, 
+      'Error (deleteItemHandler) idValidator '
+      );
 
-  // Get the item from the table
-  // https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB/DocumentClient.html#get-property
+  const idValidationResult = idValidator.validateId();
+
+  if (idValidationResult) {
+    // Se a validação do ID falhar, retorne o objeto de resposta diretamente
+
+    return idValidationResult;
+  }
+
+  const id = idValidator.extractId();
+
   var params = {
     TableName: "CadastroClientes",
     Key: { id: id },

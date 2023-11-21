@@ -18,13 +18,13 @@ export const putItemHandler = async (
   // Verifique com o GERENTE se for precioso colocar o console.info
   //console.info('received:', event);
 
-    // Cria uma instância do validador de método HTTP
-    const httpMethodValidator = new HttpMethodValidator(
-      event,
-      405, // Código de status a ser retornado se o método HTTP for inválido
-      'POST', // Método HTTP esperado
-      'deleteItemHandler---Erro ao processar solicitação: Método HTTP inválido' // Mensagem de erro para o log
-    );
+  // Cria uma instância do validador de método HTTP
+  const httpMethodValidator = new HttpMethodValidator(
+    event,
+    405, // Código de status a ser retornado se o método HTTP for inválido
+    'POST', // Método HTTP esperado
+    'deleteItemHandler---Erro ao processar solicitação: Método HTTP inválido' // Mensagem de erro para o log
+  );
 
   // Valida o método HTTP
   const httpMethodValidationResult = httpMethodValidator.validateHttpMethod();
@@ -38,10 +38,10 @@ export const putItemHandler = async (
   try {
     // Verifique se o corpo do evento está presente
     if (!event.body) {
-      throw new Error('Corpo não encontrado no evento.');      
+      throw new Error('Corpo não encontrado no evento.');
     }
-    
-    const body = JSON.parse(event.body);  
+
+    const body = JSON.parse(event.body);
 
     //"REGRA de negocio": deve ter todos os elementos para fazer o CREATE (do CRUD)  
     // Verificar a presença dos campos obrigatórios
@@ -49,7 +49,7 @@ export const putItemHandler = async (
 
     // "REGRA de negocio": deve ter todos os elementos para fazer o CREATE (do CRUD)
     if (!id || !Ativo || !Enderecos || !Contatos || !DataNascimento || !NomeCompleto) {
-      
+
       if (!id) {
         console.log("id está undefined");
       }
@@ -70,7 +70,7 @@ export const putItemHandler = async (
       }
 
       console.log("O corpo não contém todos os elementos necessários para realizar a operação de CREATE. (putItemHandler)", id, Ativo, Enderecos, Contatos, DataNascimento, NomeCompleto);
-      
+
       throw new Error('O corpo não contém todos os elementos necessários para realizar a operação de CREATE.');
     }
     else {
@@ -84,7 +84,7 @@ export const putItemHandler = async (
   }
   catch (err) {
     const response_StatusCode_400 = {
-      headers: {        'Content-Type': 'application/json'},
+      headers: { 'Content-Type': 'application/json' },
       statusCode: 400,
       body: JSON.stringify(err)
     };
