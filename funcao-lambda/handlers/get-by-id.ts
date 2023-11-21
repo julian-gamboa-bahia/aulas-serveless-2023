@@ -4,6 +4,7 @@ import { DynamoDBDocumentClient, GetCommand } from '@aws-sdk/lib-dynamodb';
 import { HttpMethodValidator } from '../regras_negocio/HttpMethodValidator';
 import { IdValidator } from '../regras_negocio/IdValidator';
 
+
 const client = process.env.AWS_SAM_LOCAL ? new DynamoDBClient({
   endpoint: "http://172.17.0.1:8000",
 }) : new DynamoDBClient({});
@@ -19,7 +20,7 @@ export const getByIdHandler = async (
 ): Promise<any> => {
 
   // Verifique com o GERENTE se for precioso colocar o console.info
-  console.info('Event received: (getByIdHandler) ', event);
+  //console.info('Event received: (getByIdHandler) ', event);
 
   // Cria uma instância do validador de método HTTP
   const httpMethodValidator = new HttpMethodValidator(
@@ -40,7 +41,8 @@ export const getByIdHandler = async (
   
 
   // Verifica se o parameter {id} é um número inteiro
-  const idValidator = new IdValidator(event, 406, 'Error (getByIdHandler) idValidator ');
+  const idValidator = 
+  new IdValidator(event, 404, 'Error (getByIdHandler) idValidator ');
   
   const idValidationResult = idValidator.validateId();
 

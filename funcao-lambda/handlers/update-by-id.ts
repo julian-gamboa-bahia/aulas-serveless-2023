@@ -3,6 +3,8 @@ import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { DynamoDBDocumentClient, UpdateCommand } from '@aws-sdk/lib-dynamodb';
 import { ReturnValue } from "@aws-sdk/client-dynamodb";
 
+import { Body_IdValidator } from '../regras_negocio/Body_IdValidator';
+
 const client = process.env.AWS_SAM_LOCAL ? new DynamoDBClient({
   endpoint: "http://172.17.0.1:8000",
 }) : new DynamoDBClient({});
@@ -13,7 +15,7 @@ export const updateByIdHandler = async (
   event: any): Promise<any> => {
 
   // Verifique com o GERENTE se for precioso colocar o console.info
-  console.info('Event received: (getByIdHandler) ', event);
+  //console.info('Event received: (getByIdHandler) ', event);
 
 
   if (event.httpMethod !== 'PUT') {
@@ -42,6 +44,7 @@ export const updateByIdHandler = async (
 
       if (!id) {
         console.log("id está undefined");
+        throw new Error('O corpo não contém :  id ');
       }
       if (!ExpressionAttributeValues) {
         console.log("ExpressionAttributeValues está undefined");
@@ -50,12 +53,28 @@ export const updateByIdHandler = async (
         console.log("UpdateExpression está undefined");
       }
 
-      console.log("O corpo não contém todos os elementos necessários para realizar a operação de UPDATE. (putItemHandler)", id, ExpressionAttributeValues, UpdateExpression);
+      console.log("O corpo não contém todos os elementos necessários para realizar a operação de UPDATE. (putItemHandler)", "id  " + id, "ExpressionAttributeValues " + ExpressionAttributeValues, "UpdateExpression " + UpdateExpression);
 
-      throw new Error('O corpo não contém todos os elementos necessários para realizar a operação de UPDATE.');
+      throw new Error('O corpo não contém : todos os elementos necessários para realizar a operação de UPDATE.');
     }
     else {
       id = body.id;
+      // Verifica se o parameter body.id é um número inteiro
+      const body_IdValidator = new
+        Body_IdValidator(
+          id, // número inteiro ??????
+          400, // statusCode
+          'Error (updateByIdHandler) Body_IdValidator ')
+        ;
+
+      const idValidationResult = body_IdValidator.validateId();
+
+      if (idValidationResult) {
+        // Se a validação do ID falhar, retorne o objeto de resposta diretamente
+
+        return idValidationResult;
+      }
+
       ExpressionAttributeValues = body.ExpressionAttributeValues;
       UpdateExpression = body.UpdateExpression;
     }
@@ -67,7 +86,7 @@ export const updateByIdHandler = async (
       body: JSON.stringify(err)
     };
     // Verifique com o GERENTE se for precioso colocar o console
-    console.log("Error (updateByIdHandler)", err);
+    //console.log("Error (updateByIdHandler)", err);
     return response_StatusCode_400
   }
 

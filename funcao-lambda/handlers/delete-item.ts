@@ -15,7 +15,7 @@ export const deleteItemHandler = async (
   event: any): Promise<any> => {
 
   // Verifique com o GERENTE se for precioso colocar o console.info
-  console.info('received:', event);
+  //console.info('received:', event);
 
   // Cria uma instância do validador de método HTTP
   const httpMethodValidator = new HttpMethodValidator(
@@ -39,12 +39,12 @@ export const deleteItemHandler = async (
   if (
     !Number.isInteger(Number(event.pathParameters.id))
   ) {
-    const response_StatusCode_406 = {
-      statusCode: 406,
+    const response_StatusCode_404 = {
+      statusCode: 404,
       body: JSON.stringify("Não número INTEIRO  " + event.pathParameters.id)
     };
-    console.log("Error (deleteItemHandler)", response_StatusCode_406);
-    return response_StatusCode_406;
+    console.log("Error (deleteItemHandler)", response_StatusCode_404);
+    return response_StatusCode_404;
   }
   const id = Number(event.pathParameters.id);
 

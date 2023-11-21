@@ -16,7 +16,7 @@ export const getAllItemsHandler = async (
 ): Promise<any> => {
 
   // Verifique com o GERENTE se for precioso colocar o console.info
-  console.info('received:', event);
+  //console.info('received:', event);
 
   // Cria uma instância do validador de método HTTP
   const httpMethodValidator = new HttpMethodValidator(

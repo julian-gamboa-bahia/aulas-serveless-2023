@@ -60,7 +60,7 @@ const event: APIGatewayProxyEvent = {
 };
 
 
-describe(' (deleteItemHandler) deve retornar 406 ao receber  {id} com valor 1.1 (Não Inteiro)', function () {
+describe(' (deleteItemHandler) deve retornar  receber  {id} com valor 1.1 (Não Inteiro)', function () {
 
     //Para desacoplar a lógica de negocios do DynamoDB
     beforeEach(() => {
@@ -68,19 +68,19 @@ describe(' (deleteItemHandler) deve retornar 406 ao receber  {id} com valor 1.1 
     });
 
 
-    it('verifies response status Code 406, com {id} como 1.1 (Não Inteiro)', async () => {
+    it('verifies response status Code 400, com {id} como 1.1 (Não Inteiro)', async () => {
 
 
         // Configurar o evento com um ID que não é um número inteiro
         event.pathParameters = { id: '1.1' };
         const result: APIGatewayProxyResult = await deleteItemHandler(event);
 
-        expect(result.statusCode).toEqual(406);
+        expect(result.statusCode).toEqual(400);
 
     });
 });
 
-describe(' (deleteItemHandler) deve retornar 406 ao receber  {id} do tipo STRING (Não Inteiro) ', function () {
+describe(' (deleteItemHandler) deve retornar 400 ao receber  {id} do tipo STRING (Não Inteiro) ', function () {
 
     //Para desacoplar a lógica de negocios do DynamoDB
     beforeEach(() => {
@@ -89,19 +89,19 @@ describe(' (deleteItemHandler) deve retornar 406 ao receber  {id} do tipo STRING
     });
 
 
-    it('verifies response status Code 406, com {id} do tipo STRING (Não Inteiro)', async () => {
+    it('verifies response status Code 400, com {id} do tipo STRING (Não Inteiro)', async () => {
 
         
         //console.log(" pathParameters ", event.pathParameters);
         const result: APIGatewayProxyResult = await deleteItemHandler(event);
 
-        expect(result.statusCode).toEqual(406);
+        expect(result.statusCode).toEqual(400);
 
     });
 });
 
 
-describe(' (deleteItemHandler) deve retornar 406 ao NÂO receber  {id} ', function () {
+describe(' (deleteItemHandler) deve retornar 400 ao NÂO receber  {id} ', function () {
 
     //Para desacoplar a lógica de negocios do DynamoDB
     beforeEach(() => {
@@ -109,14 +109,14 @@ describe(' (deleteItemHandler) deve retornar 406 ao NÂO receber  {id} ', functi
     });
 
 
-    it('verifies response status Code 406, com "event.pathParameters = {  };" (VAZIO)', async () => {
+    it('verifies response status Code 400, com "event.pathParameters = {  };" (VAZIO)', async () => {
 
 
         // Configurar o evento com um ID que não é um número inteiro, VAZIO neste caso
         
         const result: APIGatewayProxyResult = await deleteItemHandler(event);
 
-        expect(result.statusCode).toEqual(406);
+        expect(result.statusCode).toEqual(400);
 
     });
 });
